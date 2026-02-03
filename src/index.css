@@ -2,95 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* 江南水墨配色设计系统 - Jiangnan Ink Wash Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* 主色调 - Primary Colors */
+    --background: 0 0% 98%;              /* 素绢白 #FAFAFA */
+    --foreground: 200 26% 18%;           /* 水墨黑 #263238 */
 
+    /* 卡片与弹窗 */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 200 26% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 200 26% 18%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* 主要操作色 - 远山黛 */
+    --primary: 199 22% 37%;              /* #4A6572 */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* 次要色 - 烟雨灰 */
+    --secondary: 200 18% 62%;            /* #90A4AE */
+    --secondary-foreground: 200 26% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* 柔和色 - 淡墨灰 */
+    --muted: 200 15% 92%;
+    --muted-foreground: 200 13% 55%;     /* #78909C */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* 强调色 - 青瓷绿 */
+    --accent: 174 42% 65%;               /* #80CBC4 */
+    --accent-foreground: 200 26% 18%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* 破坏性操作 - 海棠红 */
+    --destructive: 340 82% 76%;          /* #F48FB1 */
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* 边框与输入框 */
+    --border: 200 18% 82%;
+    --input: 200 18% 88%;
+    --ring: 199 22% 37%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* 自定义语义色 */
+    --success: 85 54% 42%;               /* 竹叶青 #689F38 */
+    --success-foreground: 0 0% 98%;
+    
+    --warning: 45 100% 65%;              /* 琉璃黄 #FFD54F */
+    --warning-foreground: 200 26% 18%;
+    
+    --collaboration: 291 47% 83%;        /* 藕荷淡 #E1BEE7 */
+    --collaboration-foreground: 200 26% 18%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --online: 174 42% 65%;               /* 青瓷绿 在线状态 */
 
-    --sidebar-primary: 240 5.9% 10%;
-
+    /* 侧边栏 */
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 200 26% 18%;
+    --sidebar-primary: 199 22% 37%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 200 18% 92%;
+    --sidebar-accent-foreground: 200 26% 18%;
+    --sidebar-border: 200 18% 88%;
+    --sidebar-ring: 199 22% 37%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 200 26% 14%;
+    --foreground: 0 0% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 200 26% 18%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 200 26% 18%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 174 42% 65%;
+    --primary-foreground: 200 26% 18%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 200 18% 30%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 200 18% 25%;
+    --muted-foreground: 200 13% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 174 42% 55%;
+    --accent-foreground: 200 26% 18%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 340 70% 55%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 200 18% 25%;
+    --input: 200 18% 22%;
+    --ring: 174 42% 65%;
+
+    --success: 85 54% 50%;
+    --success-foreground: 200 26% 18%;
+    
+    --warning: 45 100% 55%;
+    --warning-foreground: 200 26% 18%;
+    
+    --collaboration: 291 40% 70%;
+    --collaboration-foreground: 200 26% 18%;
+
+    --online: 174 42% 65%;
+
+    --sidebar-background: 200 26% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 174 42% 65%;
+    --sidebar-primary-foreground: 200 26% 18%;
+    --sidebar-accent: 200 18% 22%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 200 18% 22%;
+    --sidebar-ring: 174 42% 65%;
   }
 }
 
@@ -100,6 +124,156 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
   }
+}
+
+/* 编辑器样式 - Editor Styles */
+@layer components {
+  .prose-ink {
+    @apply text-foreground leading-relaxed;
+  }
+
+  .prose-ink h1 {
+    @apply text-3xl font-bold mb-4 text-foreground border-b border-border pb-2;
+  }
+
+  .prose-ink h2 {
+    @apply text-2xl font-semibold mb-3 text-foreground;
+  }
+
+  .prose-ink h3 {
+    @apply text-xl font-medium mb-2 text-foreground;
+  }
+
+  .prose-ink p {
+    @apply mb-4 leading-7;
+  }
+
+  .prose-ink ul,
+  .prose-ink ol {
+    @apply mb-4 ml-6;
+  }
+
+  .prose-ink ul {
+    @apply list-disc;
+  }
+
+  .prose-ink ol {
+    @apply list-decimal;
+  }
+
+  .prose-ink li {
+    @apply mb-1;
+  }
+
+  .prose-ink blockquote {
+    @apply border-l-4 border-primary pl-4 italic my-4 text-muted-foreground;
+  }
+
+  .prose-ink code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  .prose-ink pre {
+    @apply bg-muted p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  .prose-ink pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose-ink img {
+    @apply max-w-full h-auto rounded-lg my-4 shadow-sm;
+  }
+
+  /* 表格样式 */
+  .prose-ink table {
+    @apply w-full border-collapse my-4;
+  }
+
+  .prose-ink th,
+  .prose-ink td {
+    @apply border border-border px-4 py-2 text-left;
+  }
+
+  .prose-ink th {
+    @apply bg-muted font-semibold;
+  }
+
+  .prose-ink tr:nth-child(even) {
+    @apply bg-muted/30;
+  }
+
+  /* 高亮标记 */
+  .prose-ink mark {
+    @apply bg-warning/40 px-1 rounded;
+  }
+}
+
+/* 工具栏动画 */
+@layer utilities {
+  .toolbar-shadow {
+    box-shadow: 0 2px 8px -2px hsl(var(--primary) / 0.15);
+  }
+
+  .ink-transition {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .ink-hover {
+    @apply hover:bg-primary/10 active:bg-primary/20;
+  }
+
+  .collaborator-pulse {
+    animation: pulse-soft 2s infinite;
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+}
+
+/* TipTap 编辑器覆盖样式 */
+.ProseMirror {
+  @apply outline-none min-h-[60vh] prose-ink;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-muted-foreground pointer-events-none float-left h-0;
+  content: attr(data-placeholder);
+}
+
+/* 表格选中状态 */
+.ProseMirror .selectedCell:after {
+  @apply bg-primary/20 absolute inset-0 pointer-events-none;
+  content: "";
+}
+
+.ProseMirror table {
+  @apply border-collapse w-full;
+}
+
+.ProseMirror td,
+.ProseMirror th {
+  @apply border border-border px-3 py-2 min-w-[100px] relative align-top;
+}
+
+.ProseMirror th {
+  @apply bg-muted font-semibold;
+}
+
+/* 图片调整 */
+.ProseMirror img {
+  @apply cursor-pointer;
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  @apply ring-2 ring-primary ring-offset-2;
 }
