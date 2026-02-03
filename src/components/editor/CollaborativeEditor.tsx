@@ -15,42 +15,42 @@ import { EditorToolbar } from "./EditorToolbar";
 import { ImageUploadDialog } from "./ImageUploadDialog";
 import { Collaborator } from "./CollaboratorAvatars";
 
-// 模拟协作者数据
+// Mock collaborators data
 const mockCollaborators: Collaborator[] = [
-  { id: "1", name: "张明", color: "collaboration", isOnline: true },
-  { id: "2", name: "李华", color: "accent", isOnline: true },
-  { id: "3", name: "王芳", color: "warning", isOnline: false },
+  { id: "1", name: "Alex Chen", color: "collaboration", isOnline: true },
+  { id: "2", name: "Sarah Lee", color: "accent", isOnline: true },
+  { id: "3", name: "Mike Wang", color: "warning", isOnline: false },
 ];
 
 const defaultContent = `
-<h1>欢迎使用墨迹文档</h1>
-<p>这是一个简洁优雅的协作文档编辑器，灵感来自江南水墨的意境。</p>
+<h1>Welcome to Ink Docs</h1>
+<p>A clean and elegant collaborative document editor, inspired by traditional ink wash aesthetics.</p>
 
-<h2>✨ 主要功能</h2>
+<h2>✨ Key Features</h2>
 <ul>
-  <li><strong>富文本编辑</strong> - 支持标题、加粗、斜体、下划线、高亮等格式</li>
-  <li><strong>表格支持</strong> - 可以插入和编辑表格</li>
-  <li><strong>图片插入</strong> - 支持上传图片或通过链接插入</li>
-  <li><strong>协作功能</strong> - 查看在线协作者状态</li>
-  <li><strong>导出 PDF</strong> - 一键导出为 PDF 文件</li>
+  <li><strong>Rich Text Editing</strong> - Support for headings, bold, italic, underline, highlight and more</li>
+  <li><strong>Table Support</strong> - Insert and edit tables with ease</li>
+  <li><strong>Image Insertion</strong> - Upload images or insert via URL</li>
+  <li><strong>Collaboration</strong> - See who's online and working with you</li>
+  <li><strong>PDF Export</strong> - Export your document with one click</li>
 </ul>
 
-<h2>📝 试试看</h2>
-<p>开始编辑这段文字，体验流畅的编辑体验。你可以：</p>
+<h2>📝 Try It Out</h2>
+<p>Start editing this text to experience the smooth editing flow. You can:</p>
 <ol>
-  <li>使用工具栏按钮设置文字格式</li>
-  <li>点击表格按钮插入表格</li>
-  <li>上传或链接图片到文档中</li>
-  <li>完成后导出为 PDF 保存</li>
+  <li>Use the toolbar buttons to format your text</li>
+  <li>Click the table button to insert a table</li>
+  <li>Upload or link images into your document</li>
+  <li>Export to PDF when you're done</li>
 </ol>
 
 <blockquote>
-  <p>「墨迹淡远，意在笔先」—— 愿这款编辑器能带给你如行云流水般的书写体验。</p>
+  <p>"Ink fades into the distance, meaning precedes the brush" — May this editor bring you a writing experience as fluid as flowing water.</p>
 </blockquote>
 `;
 
 export const CollaborativeEditor = () => {
-  const [title, setTitle] = useState("墨迹文档 - 协作演示");
+  const [title, setTitle] = useState("Ink Docs - Collaboration Demo");
   const [isSaved, setIsSaved] = useState(true);
   const [lastSaved, setLastSaved] = useState(new Date());
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
@@ -107,7 +107,7 @@ export const CollaborativeEditor = () => {
     (url: string) => {
       if (editor) {
         editor.chain().focus().setImage({ src: url }).run();
-        toast.success("图片已插入");
+        toast.success("Image inserted");
       }
     },
     [editor]
@@ -116,7 +116,7 @@ export const CollaborativeEditor = () => {
   const handleExportPDF = useCallback(async () => {
     if (!editor) return;
 
-    toast.loading("正在生成 PDF...", { id: "pdf-export" });
+    toast.loading("Generating PDF...", { id: "pdf-export" });
 
     try {
       // Dynamic import for html2pdf
@@ -155,7 +155,7 @@ export const CollaborativeEditor = () => {
 
       const opt = {
         margin: [15, 15, 15, 15] as [number, number, number, number],
-        filename: `${title || "文档"}.pdf`,
+        filename: `${title || "Document"}.pdf`,
         image: { type: "jpeg" as const, quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: "mm" as const, format: "a4" as const, orientation: "portrait" as const },
@@ -163,10 +163,10 @@ export const CollaborativeEditor = () => {
 
       await html2pdf().set(opt).from(element).save();
 
-      toast.success("PDF 导出成功！", { id: "pdf-export" });
+      toast.success("PDF exported successfully!", { id: "pdf-export" });
     } catch (error) {
       console.error("PDF export failed:", error);
-      toast.error("PDF 导出失败，请重试", { id: "pdf-export" });
+      toast.error("PDF export failed, please try again", { id: "pdf-export" });
     }
   }, [editor, title]);
 

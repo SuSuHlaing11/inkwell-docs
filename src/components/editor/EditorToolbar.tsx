@@ -106,31 +106,31 @@ export const EditorToolbar = ({
   return (
     <div className="sticky top-0 z-10 bg-card/95 backdrop-blur-sm border-b border-border px-4 py-2 toolbar-shadow">
       <div className="flex flex-wrap items-center gap-1">
-        {/* 历史操作 */}
+        {/* History */}
         <ToolbarButton
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
-          tooltip="撤销"
+          tooltip="Undo"
         >
           <Undo className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}
-          tooltip="重做"
+          tooltip="Redo"
         >
           <Redo className="h-4 w-4" />
         </ToolbarButton>
 
         <Separator orientation="vertical" className="h-6 mx-1" />
 
-        {/* 标题 */}
+        {/* Headings */}
         <ToolbarButton
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
           isActive={editor.isActive("heading", { level: 1 })}
-          tooltip="标题 1"
+          tooltip="Heading 1"
         >
           <Heading1 className="h-4 w-4" />
         </ToolbarButton>
@@ -139,7 +139,7 @@ export const EditorToolbar = ({
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
           isActive={editor.isActive("heading", { level: 2 })}
-          tooltip="标题 2"
+          tooltip="Heading 2"
         >
           <Heading2 className="h-4 w-4" />
         </ToolbarButton>
@@ -148,117 +148,117 @@ export const EditorToolbar = ({
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
           isActive={editor.isActive("heading", { level: 3 })}
-          tooltip="标题 3"
+          tooltip="Heading 3"
         >
           <Heading3 className="h-4 w-4" />
         </ToolbarButton>
 
         <Separator orientation="vertical" className="h-6 mx-1" />
 
-        {/* 文字样式 */}
+        {/* Text Styles */}
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           isActive={editor.isActive("bold")}
-          tooltip="加粗"
+          tooltip="Bold"
         >
           <Bold className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
           isActive={editor.isActive("italic")}
-          tooltip="斜体"
+          tooltip="Italic"
         >
           <Italic className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           isActive={editor.isActive("underline")}
-          tooltip="下划线"
+          tooltip="Underline"
         >
           <Underline className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleStrike().run()}
           isActive={editor.isActive("strike")}
-          tooltip="删除线"
+          tooltip="Strikethrough"
         >
           <Strikethrough className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleHighlight().run()}
           isActive={editor.isActive("highlight")}
-          tooltip="高亮"
+          tooltip="Highlight"
         >
           <Highlighter className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleCode().run()}
           isActive={editor.isActive("code")}
-          tooltip="代码"
+          tooltip="Code"
         >
           <Code className="h-4 w-4" />
         </ToolbarButton>
 
         <Separator orientation="vertical" className="h-6 mx-1" />
 
-        {/* 对齐 */}
+        {/* Alignment */}
         <ToolbarButton
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
           isActive={editor.isActive({ textAlign: "left" })}
-          tooltip="左对齐"
+          tooltip="Align Left"
         >
           <AlignLeft className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
           isActive={editor.isActive({ textAlign: "center" })}
-          tooltip="居中"
+          tooltip="Center"
         >
           <AlignCenter className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
           isActive={editor.isActive({ textAlign: "right" })}
-          tooltip="右对齐"
+          tooltip="Align Right"
         >
           <AlignRight className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
           isActive={editor.isActive({ textAlign: "justify" })}
-          tooltip="两端对齐"
+          tooltip="Justify"
         >
           <AlignJustify className="h-4 w-4" />
         </ToolbarButton>
 
         <Separator orientation="vertical" className="h-6 mx-1" />
 
-        {/* 列表 */}
+        {/* Lists */}
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           isActive={editor.isActive("bulletList")}
-          tooltip="无序列表"
+          tooltip="Bullet List"
         >
           <List className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           isActive={editor.isActive("orderedList")}
-          tooltip="有序列表"
+          tooltip="Numbered List"
         >
           <ListOrdered className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           isActive={editor.isActive("blockquote")}
-          tooltip="引用"
+          tooltip="Quote"
         >
           <Quote className="h-4 w-4" />
         </ToolbarButton>
 
         <Separator orientation="vertical" className="h-6 mx-1" />
 
-        {/* 表格 */}
+        {/* Table */}
         <DropdownMenu>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -273,41 +273,41 @@ export const EditorToolbar = ({
               </DropdownMenuTrigger>
             </TooltipTrigger>
             <TooltipContent>
-              <p>表格</p>
+              <p>Table</p>
             </TooltipContent>
           </Tooltip>
           <DropdownMenuContent align="start" className="w-48">
             <DropdownMenuItem onClick={insertTable}>
               <Plus className="h-4 w-4 mr-2" />
-              插入表格
+              Insert Table
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={addRowBefore}
               disabled={!editor.can().addRowBefore()}
             >
               <Plus className="h-4 w-4 mr-2" />
-              上方插入行
+              Add Row Above
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={addRowAfter}
               disabled={!editor.can().addRowAfter()}
             >
               <Plus className="h-4 w-4 mr-2" />
-              下方插入行
+              Add Row Below
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={addColumnBefore}
               disabled={!editor.can().addColumnBefore()}
             >
               <Plus className="h-4 w-4 mr-2" />
-              左侧插入列
+              Add Column Left
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={addColumnAfter}
               disabled={!editor.can().addColumnAfter()}
             >
               <Plus className="h-4 w-4 mr-2" />
-              右侧插入列
+              Add Column Right
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={deleteRow}
@@ -315,7 +315,7 @@ export const EditorToolbar = ({
               className="text-destructive focus:text-destructive"
             >
               <Minus className="h-4 w-4 mr-2" />
-              删除行
+              Delete Row
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={deleteColumn}
@@ -323,7 +323,7 @@ export const EditorToolbar = ({
               className="text-destructive focus:text-destructive"
             >
               <Minus className="h-4 w-4 mr-2" />
-              删除列
+              Delete Column
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={deleteTable}
@@ -331,19 +331,19 @@ export const EditorToolbar = ({
               className="text-destructive focus:text-destructive"
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              删除表格
+              Delete Table
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* 图片 */}
-        <ToolbarButton onClick={onInsertImage} tooltip="插入图片">
+        {/* Image */}
+        <ToolbarButton onClick={onInsertImage} tooltip="Insert Image">
           <Image className="h-4 w-4" />
         </ToolbarButton>
 
         <div className="flex-1" />
 
-        {/* 导出 */}
+        {/* Export */}
         <Button
           variant="default"
           size="sm"
@@ -351,7 +351,7 @@ export const EditorToolbar = ({
           className="gap-2"
         >
           <FileDown className="h-4 w-4" />
-          导出 PDF
+          Export PDF
         </Button>
       </div>
     </div>
