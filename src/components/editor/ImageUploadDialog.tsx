@@ -59,7 +59,7 @@ export const ImageUploadDialog = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ImageIcon className="h-5 w-5 text-primary" />
-            插入图片
+            Insert Image
           </DialogTitle>
         </DialogHeader>
 
@@ -67,11 +67,11 @@ export const ImageUploadDialog = ({
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="upload" className="gap-2">
               <Upload className="h-4 w-4" />
-              上传图片
+              Upload
             </TabsTrigger>
             <TabsTrigger value="url" className="gap-2">
               <Link className="h-4 w-4" />
-              图片链接
+              Image URL
             </TabsTrigger>
           </TabsList>
 
@@ -90,14 +90,14 @@ export const ImageUploadDialog = ({
               {preview ? (
                 <img
                   src={preview}
-                  alt="预览"
+                  alt="Preview"
                   className="max-h-48 mx-auto rounded-lg"
                 />
               ) : (
                 <div className="text-muted-foreground">
                   <Upload className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                  <p>点击上传图片</p>
-                  <p className="text-xs mt-1">支持 JPG、PNG、GIF 格式</p>
+                  <p>Click to upload an image</p>
+                  <p className="text-xs mt-1">Supports JPG, PNG, GIF</p>
                 </div>
               )}
             </div>
@@ -105,7 +105,7 @@ export const ImageUploadDialog = ({
 
           <TabsContent value="url" className="mt-4 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="image-url">图片地址</Label>
+              <Label htmlFor="image-url">Image URL</Label>
               <Input
                 id="image-url"
                 placeholder="https://example.com/image.jpg"
@@ -117,7 +117,7 @@ export const ImageUploadDialog = ({
               <div className="border rounded-lg p-4">
                 <img
                   src={url}
-                  alt="预览"
+                  alt="Preview"
                   className="max-h-48 mx-auto rounded-lg"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = "none";
@@ -130,10 +130,10 @@ export const ImageUploadDialog = ({
 
         <DialogFooter>
           <Button variant="outline" onClick={handleClose}>
-            取消
+            Cancel
           </Button>
           <Button onClick={handleInsert} disabled={!url && !preview}>
-            插入
+            Insert
           </Button>
         </DialogFooter>
       </DialogContent>

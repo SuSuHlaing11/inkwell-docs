@@ -26,9 +26,9 @@ export const DocumentHeader = ({
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
 
-    if (minutes < 1) return "刚刚保存";
-    if (minutes < 60) return `${minutes} 分钟前保存`;
-    return date.toLocaleTimeString("zh-CN", {
+    if (minutes < 1) return "Just saved";
+    if (minutes < 60) return `Saved ${minutes} min ago`;
+    return date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -55,18 +55,18 @@ export const DocumentHeader = ({
               className="text-lg font-semibold text-foreground cursor-pointer hover:text-primary ink-transition"
               onClick={() => setIsEditing(true)}
             >
-              {title || "无标题文档"}
+              {title || "Untitled Document"}
             </h1>
           )}
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             {isSaved ? (
               <>
                 <Cloud className="h-3 w-3" />
-                <span>{lastSaved ? formatLastSaved(lastSaved) : "已保存到云端"}</span>
+                <span>{lastSaved ? formatLastSaved(lastSaved) : "Saved to cloud"}</span>
                 <Check className="h-3 w-3 text-success" />
               </>
             ) : (
-              <span className="text-warning">正在编辑...</span>
+              <span className="text-warning">Editing...</span>
             )}
           </div>
         </div>

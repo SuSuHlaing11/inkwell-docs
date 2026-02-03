@@ -59,7 +59,7 @@ export const CollaboratorAvatars = ({
             <p>
               {collaborator.name}{" "}
               <span className="text-muted-foreground">
-                ({collaborator.isOnline ? "在线" : "离线"})
+                ({collaborator.isOnline ? "Online" : "Offline"})
               </span>
             </p>
           </TooltipContent>
@@ -72,7 +72,7 @@ export const CollaboratorAvatars = ({
           </button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>邀请协作者</p>
+          <p>Invite collaborator</p>
         </TooltipContent>
       </Tooltip>
     </div>
