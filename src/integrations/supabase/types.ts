@@ -14,13 +14,134 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      document_edits: {
+        Row: {
+          action: string
+          content_snapshot: string | null
+          created_at: string
+          document_id: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          content_snapshot?: string | null
+          created_at?: string
+          document_id: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          content_snapshot?: string | null
+          created_at?: string
+          document_id?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_edits_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_shares: {
+        Row: {
+          created_at: string
+          document_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_shares_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          owner_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          owner_id: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          owner_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_document_collaborator: { Args: { doc_id: string }; Returns: boolean }
+      is_document_owner: { Args: { doc_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

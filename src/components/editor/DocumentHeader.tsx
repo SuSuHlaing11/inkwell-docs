@@ -1,24 +1,36 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { FileText, Check, Cloud } from "lucide-react";
-import { CollaboratorAvatars, Collaborator } from "./CollaboratorAvatars";
+import { Button } from "@/components/ui/button";
+import { FileText, Check, Cloud, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { HistoryPanel } from "./HistoryPanel";
+import { toast } from "sonner";
 
 interface DocumentHeaderProps {
   title: string;
   onTitleChange: (title: string) => void;
-  collaborators: Collaborator[];
   isSaved: boolean;
   lastSaved?: Date;
+  documentId: string | null;
 }
 
 export const DocumentHeader = ({
   title,
   onTitleChange,
-  collaborators,
   isSaved,
   lastSaved,
+  documentId,
 }: DocumentHeaderProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success("Signed out successfully");
+    navigate("/auth");
+  };
 
   const formatLastSaved = (date: Date) => {
     const now = new Date();
@@ -66,13 +78,27 @@ export const DocumentHeader = ({
                 <Check className="h-3 w-3 text-success" />
               </>
             ) : (
-              <span className="text-warning">Editing...</span>
+              <span className="text-warning">Saving...</span>
             )}
           </div>
         </div>
       </div>
 
-      <CollaboratorAvatars collaborators={collaborators} />
+      <div className="flex items-center gap-2">
+        <HistoryPanel documentId={documentId} />
+        
+        {user && (
+          <div className="flex items-center gap-2 ml-2 pl-2 border-l border-border">
+            <span className="text-sm text-muted-foreground hidden sm:inline">
+              {user.email?.split("@")[0]}
+            </span>
+            <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-1">
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Sign Out</span>
+            </Button>
+          </div>
+        )}
+      </div>
     </header>
   );
 };
