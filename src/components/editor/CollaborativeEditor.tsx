@@ -4,63 +4,40 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
+import { TextStyle } from "@tiptap/extension-text-style";
 import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { TableHeader } from "@tiptap/extension-table-header";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
+import { useDocument } from "@/hooks/useDocument";
 import { DocumentHeader } from "./DocumentHeader";
 import { EditorToolbar } from "./EditorToolbar";
 import { ImageUploadDialog } from "./ImageUploadDialog";
-import { Collaborator } from "./CollaboratorAvatars";
-
-// Mock collaborators data
-const mockCollaborators: Collaborator[] = [
-  { id: "1", name: "Alex Chen", color: "collaboration", isOnline: true },
-  { id: "2", name: "Sarah Lee", color: "accent", isOnline: true },
-  { id: "3", name: "Mike Wang", color: "warning", isOnline: false },
-];
-
-const defaultContent = `
-<h1>Welcome to Ink Docs</h1>
-<p>A clean and elegant collaborative document editor, inspired by traditional ink wash aesthetics.</p>
-
-<h2>✨ Key Features</h2>
-<ul>
-  <li><strong>Rich Text Editing</strong> - Support for headings, bold, italic, underline, highlight and more</li>
-  <li><strong>Table Support</strong> - Insert and edit tables with ease</li>
-  <li><strong>Image Insertion</strong> - Upload images or insert via URL</li>
-  <li><strong>Collaboration</strong> - See who's online and working with you</li>
-  <li><strong>PDF Export</strong> - Export your document with one click</li>
-</ul>
-
-<h2>📝 Try It Out</h2>
-<p>Start editing this text to experience the smooth editing flow. You can:</p>
-<ol>
-  <li>Use the toolbar buttons to format your text</li>
-  <li>Click the table button to insert a table</li>
-  <li>Upload or link images into your document</li>
-  <li>Export to PDF when you're done</li>
-</ol>
-
-<blockquote>
-  <p>"Ink fades into the distance, meaning precedes the brush" — May this editor bring you a writing experience as fluid as flowing water.</p>
-</blockquote>
-`;
+import { FileImportDialog } from "./FileImportDialog";
+import { HistoryPanel } from "./HistoryPanel";
+import { FontSize } from "./FontSizeExtension";
+import { Loader2 } from "lucide-react";
 
 export const CollaborativeEditor = () => {
-  const [title, setTitle] = useState("Ink Docs - Collaboration Demo");
-  const [isSaved, setIsSaved] = useState(true);
-  const [lastSaved, setLastSaved] = useState(new Date());
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const { document, isLoading: docLoading, isSaving, saveDocument, updateTitle, logEdit, importContent } = useDocument();
+  
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
-  const [collaborators] = useState<Collaborator[]>(mockCollaborators);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [lastSaved, setLastSaved] = useState(new Date());
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const editLogTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [1, 2, 3],
+          levels: [1, 2, 3, 4, 5, 6],
         },
       }),
       Underline,
@@ -74,6 +51,8 @@ export const CollaborativeEditor = () => {
         inline: true,
         allowBase64: true,
       }),
+      TextStyle,
+      FontSize,
       Table.configure({
         resizable: true,
       }),
@@ -81,9 +60,24 @@ export const CollaborativeEditor = () => {
       TableHeader,
       TableCell,
     ],
-    content: defaultContent,
-    onUpdate: () => {
-      setIsSaved(false);
+    content: "",
+    onUpdate: ({ editor }) => {
+      // Debounced save
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+      saveTimeoutRef.current = setTimeout(() => {
+        saveDocument(editor.getHTML());
+        setLastSaved(new Date());
+      }, 1500);
+
+      // Debounced edit log (less frequent)
+      if (editLogTimeoutRef.current) {
+        clearTimeout(editLogTimeoutRef.current);
+      }
+      editLogTimeoutRef.current = setTimeout(() => {
+        logEdit("edited");
+      }, 10000); // Log edit every 10 seconds of activity
     },
     editorProps: {
       attributes: {
@@ -92,16 +86,27 @@ export const CollaborativeEditor = () => {
     },
   });
 
-  // 自动保存模拟
+  // Redirect to auth if not logged in
   useEffect(() => {
-    if (!isSaved) {
-      const timer = setTimeout(() => {
-        setIsSaved(true);
-        setLastSaved(new Date());
-      }, 1500);
-      return () => clearTimeout(timer);
+    if (!authLoading && !user) {
+      navigate("/auth");
     }
-  }, [isSaved]);
+  }, [authLoading, user, navigate]);
+
+  // Load document content into editor
+  useEffect(() => {
+    if (editor && document?.content) {
+      editor.commands.setContent(document.content);
+    }
+  }, [editor, document?.content]);
+
+  // Cleanup timeouts
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+      if (editLogTimeoutRef.current) clearTimeout(editLogTimeoutRef.current);
+    };
+  }, []);
 
   const handleInsertImage = useCallback(
     (url: string) => {
@@ -113,17 +118,33 @@ export const CollaborativeEditor = () => {
     [editor]
   );
 
+  const handleImportFile = useCallback(
+    (html: string, fileName: string) => {
+      if (editor) {
+        editor.commands.setContent(html);
+        importContent(html, fileName);
+      }
+    },
+    [editor, importContent]
+  );
+
+  const handleTitleChange = useCallback(
+    (newTitle: string) => {
+      updateTitle(newTitle);
+    },
+    [updateTitle]
+  );
+
   const handleExportPDF = useCallback(async () => {
     if (!editor) return;
 
     toast.loading("Generating PDF...", { id: "pdf-export" });
 
     try {
-      // Dynamic import for html2pdf
       const html2pdf = (await import("html2pdf.js")).default;
 
       const content = editor.getHTML();
-      const element = document.createElement("div");
+      const element = window.document.createElement("div");
       element.innerHTML = content;
       element.className = "prose-ink p-8";
       element.style.cssText = `
@@ -134,7 +155,6 @@ export const CollaborativeEditor = () => {
         margin: 0 auto;
       `;
 
-      // Style tables
       element.querySelectorAll("table").forEach((table) => {
         table.style.cssText =
           "width: 100%; border-collapse: collapse; margin: 16px 0;";
@@ -147,15 +167,13 @@ export const CollaborativeEditor = () => {
         (th as HTMLElement).style.cssText +=
           "background-color: #F5F5F5; font-weight: 600;";
       });
-
-      // Style images
       element.querySelectorAll("img").forEach((img) => {
         img.style.cssText = "max-width: 100%; height: auto; border-radius: 8px;";
       });
 
       const opt = {
         margin: [15, 15, 15, 15] as [number, number, number, number],
-        filename: `${title || "Document"}.pdf`,
+        filename: `${document?.title || "Document"}.pdf`,
         image: { type: "jpeg" as const, quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: "mm" as const, format: "a4" as const, orientation: "portrait" as const },
@@ -168,22 +186,31 @@ export const CollaborativeEditor = () => {
       console.error("PDF export failed:", error);
       toast.error("PDF export failed, please try again", { id: "pdf-export" });
     }
-  }, [editor, title]);
+  }, [editor, document?.title]);
+
+  if (authLoading || docLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <DocumentHeader
-        title={title}
-        onTitleChange={setTitle}
-        collaborators={collaborators}
-        isSaved={isSaved}
+        title={document?.title || "Untitled Document"}
+        onTitleChange={handleTitleChange}
+        isSaved={!isSaving}
         lastSaved={lastSaved}
+        documentId={document?.id || null}
       />
 
       <EditorToolbar
         editor={editor}
         onExportPDF={handleExportPDF}
         onInsertImage={() => setImageDialogOpen(true)}
+        onImportFile={() => setImportDialogOpen(true)}
       />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -196,6 +223,12 @@ export const CollaborativeEditor = () => {
         open={imageDialogOpen}
         onOpenChange={setImageDialogOpen}
         onInsert={handleInsertImage}
+      />
+
+      <FileImportDialog
+        open={importDialogOpen}
+        onOpenChange={setImportDialogOpen}
+        onImport={handleImportFile}
       />
     </div>
   );

@@ -21,9 +21,11 @@ import {
   Undo,
   Redo,
   FileDown,
+  FileUp,
   Minus,
   Plus,
   Trash2,
+  Type,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -43,7 +45,16 @@ interface EditorToolbarProps {
   editor: Editor | null;
   onExportPDF: () => void;
   onInsertImage: () => void;
+  onImportFile: () => void;
 }
+
+const FONT_SIZES = [
+  { label: "Small", value: "12px" },
+  { label: "Normal", value: "16px" },
+  { label: "Large", value: "20px" },
+  { label: "XL", value: "24px" },
+  { label: "2XL", value: "32px" },
+];
 
 interface ToolbarButtonProps {
   onClick: () => void;
@@ -84,6 +95,7 @@ export const EditorToolbar = ({
   editor,
   onExportPDF,
   onInsertImage,
+  onImportFile,
 }: EditorToolbarProps) => {
   if (!editor) return null;
 
@@ -152,6 +164,38 @@ export const EditorToolbar = ({
         >
           <Heading3 className="h-4 w-4" />
         </ToolbarButton>
+
+        <Separator orientation="vertical" className="h-6 mx-1" />
+
+        {/* Font Size */}
+        <DropdownMenu>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 gap-1 ink-transition ink-hover text-muted-foreground"
+                >
+                  <Type className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Font Size</p>
+            </TooltipContent>
+          </Tooltip>
+          <DropdownMenuContent align="start">
+            {FONT_SIZES.map((size) => (
+              <DropdownMenuItem
+                key={size.value}
+                onClick={() => editor.chain().focus().setFontSize(size.value).run()}
+              >
+                <span style={{ fontSize: size.value }}>{size.label}</span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Separator orientation="vertical" className="h-6 mx-1" />
 
@@ -339,6 +383,11 @@ export const EditorToolbar = ({
         {/* Image */}
         <ToolbarButton onClick={onInsertImage} tooltip="Insert Image">
           <Image className="h-4 w-4" />
+        </ToolbarButton>
+
+        {/* Import */}
+        <ToolbarButton onClick={onImportFile} tooltip="Import Document (.doc)">
+          <FileUp className="h-4 w-4" />
         </ToolbarButton>
 
         <div className="flex-1" />
